@@ -1,8 +1,19 @@
-version: '3'
+version: "3.7"
+
 services:
-    app:
-        build: .
-        ports:
-            - "8501:8501"
-        volumes:
-            - .:/app
+  app-server:
+    image: 830500671980.dkr.ecr.us-east-1.amazonaws.com/mlops/app:latest
+    deploy:
+      mode: global
+      update_config:
+        parallelism: 2
+        delay: 5s
+        order: start-first
+    ports:
+      - "80:80"
+    networks:
+      - maclen
+
+networks:
+  maclen:
+    driver: overlay
