@@ -10,7 +10,7 @@ services:
         delay: 5s
         order: start-first
     ports:
-      - "80:80"
+      - "8501:8501"
     networks:
       - maclen
 
