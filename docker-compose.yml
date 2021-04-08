@@ -4,6 +4,7 @@ services:
   app-server:
     image: 830500671980.dkr.ecr.us-east-1.amazonaws.com/mlops/app:latest
     deploy:
+      replicas: 5
       mode: global
       update_config:
         parallelism: 2
