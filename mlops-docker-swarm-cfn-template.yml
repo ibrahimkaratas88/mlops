@@ -111,7 +111,7 @@ Resources:
               amazon-linux-extras install epel -y
               yum install python-pip -y
               pip install ec2instanceconnectcli
-              pip install mssh
+              yum install amazon-ecr-credential-helper -y
               eval "$(mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  \
                 --region ${AWS::Region} ${DockerManager1} docker swarm join-token manager | grep -i 'docker')"
               # uninstall aws cli version 1
@@ -206,9 +206,8 @@ Resources:
           unzip awscliv2.zip
           ./aws/install
           amazon-linux-extras install epel -y
-          yum install python3-pip -y
-          pip3 install ec2instanceconnectcli
-          pip3 install mssh
+          yum install python-pip -y
+          pip install ec2instanceconnectcli
           yum install amazon-ecr-credential-helper -y
           mkdir -p /home/ec2-user/.docker
           cd /home/ec2-user/.docker
