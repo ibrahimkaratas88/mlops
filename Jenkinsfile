@@ -18,33 +18,33 @@ pipeline {
     }
 
     stages {
-    #    stage('creating ECR Repository') {
-    #        steps {
-    #            echo 'creating ECR Repository'
-    #            sh """
-    #            aws ecr create-repository \
-    #              --repository-name ${APP_REPO_NAME} \
-    #              --image-scanning-configuration scanOnPush=false \
-    #              --image-tag-mutability MUTABLE \
-    #              --region ${AWS_REGION}
-    #            """
-    #        }
-    #    }
-    #    stage('building Docker Image') {
-    #        steps {
-    #            echo 'building Docker Image'
-    #            sh 'docker build --force-rm -t "$ECR_REGISTRY/$APP_REPO_NAME:latest" .'
-    #            sh 'docker image ls'
-    #        }
-    #    }
-    #    stage('pushing Docker image to ECR Repository'){
-    #        steps {
-    #            echo 'pushing Docker image to ECR Repository'
-    #            sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin "$ECR_REGISTRY"'
-    #            sh 'docker push "$ECR_REGISTRY/$APP_REPO_NAME:latest"'
-#
-    #        }
-    #    }
+        stage('creating ECR Repository') {
+            steps {
+                echo 'creating ECR Repository'
+                sh """
+                aws ecr create-repository \
+                  --repository-name ${APP_REPO_NAME} \
+                  --image-scanning-configuration scanOnPush=false \
+                  --image-tag-mutability MUTABLE \
+                  --region ${AWS_REGION}
+                """
+            }
+        }
+        stage('building Docker Image') {
+            steps {
+                echo 'building Docker Image'
+                sh 'docker build --force-rm -t "$ECR_REGISTRY/$APP_REPO_NAME:latest" .'
+                sh 'docker image ls'
+            }
+        }
+        stage('pushing Docker image to ECR Repository'){
+            steps {
+                echo 'pushing Docker image to ECR Repository'
+                sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin "$ECR_REGISTRY"'
+                sh 'docker push "$ECR_REGISTRY/$APP_REPO_NAME:latest"'
+
+            }
+        }
         stage('creating infrastructure for the Application') {
             steps {
                 echo 'creating infrastructure for the Application'
