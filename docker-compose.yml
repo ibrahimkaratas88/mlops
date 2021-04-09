@@ -3,12 +3,8 @@ version: "3.7"
 services:
   app-server:
     image: 830500671980.dkr.ecr.us-east-1.amazonaws.com/mlops:latest
-    deploy:
-      mode: global
-      #update_config:
-       # parallelism: 2
-       # delay: 5s
-       # order: start-first
+    container_name: mlops-appserver
+    mem_limit: 512M
     ports:
       - "8501:8501"
     networks:
