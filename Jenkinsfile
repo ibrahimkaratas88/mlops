@@ -9,7 +9,7 @@ pipeline {
         ECR_REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
         APP_REPO_NAME = "mlops"
         APP_NAME = "app"
-        AWS_STACK_NAME = "armando-mlops-App-${BUILD_NUMBER}"
+        AWS_STACK_NAME = "mlops-App-${BUILD_NUMBER}"
         CFN_TEMPLATE="mlops-docker-swarm-cfn-template.yml"
         CFN_KEYPAIR="ibrahim"
         HOME_FOLDER = "/home/ec2-user"
