@@ -14,7 +14,7 @@ Resources:
   InstanceConnectPolicy:
     Type: "AWS::IAM::ManagedPolicy"
     Properties:
-      PolicyDocument:
+      PolicyDocument: #required
         Version: 2012-10-17
         Statement:
           - Effect: Allow
@@ -89,7 +89,7 @@ Resources:
     Properties:
       LaunchTemplateData:
         ImageId: ami-04d29b6f966df1537
-        InstanceType: t2.micro
+        InstanceType: t2.medium
         KeyName: !Ref KeyPairName
         IamInstanceProfile: 
           Arn: !GetAtt EC2ConnectProfile.Arn
@@ -108,10 +108,7 @@ Resources:
               -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
               yum install python3 -y
-              amazon-linux-extras install epel -y
-              yum install python-pip -y
-              pip install ec2instanceconnectcli
-              yum install amazon-ecr-credential-helper -y
+              pip3 install ec2instanceconnectcli
               eval "$(mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  \
                 --region ${AWS::Region} ${DockerManager1} docker swarm join-token manager | grep -i 'docker')"
               # uninstall aws cli version 1
@@ -128,7 +125,7 @@ Resources:
     Properties:
       LaunchTemplateData:
         ImageId: ami-04d29b6f966df1537
-        InstanceType: t2.micro
+        InstanceType: t2.medium
         KeyName: !Ref KeyPairName
         IamInstanceProfile: 
           Arn: !GetAtt EC2ConnectProfile.Arn
@@ -147,9 +144,7 @@ Resources:
               -o /usr/local/bin/docker-compose
               chmod +x /usr/local/bin/docker-compose
               yum install python3 -y
-              amazon-linux-extras install epel -y
-              yum install python-pip -y
-              pip install ec2instanceconnectcli
+              pip3 install ec2instanceconnectcli
               eval "$(mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  \
                 --region ${AWS::Region} ${DockerManager1} docker swarm join-token worker | grep -i 'docker')"
               # uninstall aws cli version 1
@@ -157,9 +152,6 @@ Resources:
               curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
               unzip awscliv2.zip
               ./aws/install
-              amazon-linux-extras install epel -y
-              yum install python-pip -y
-              pip install ec2instanceconnectcli
               yum install amazon-ecr-credential-helper -y
               mkdir -p /home/ec2-user/.docker
               cd /home/ec2-user/.docker
@@ -205,9 +197,6 @@ Resources:
           curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
           unzip awscliv2.zip
           ./aws/install
-          amazon-linux-extras install epel -y
-          yum install python-pip -y
-          pip install ec2instanceconnectcli
           yum install amazon-ecr-credential-helper -y
           mkdir -p /home/ec2-user/.docker
           cd /home/ec2-user/.docker
