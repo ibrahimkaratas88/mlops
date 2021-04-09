@@ -267,6 +267,11 @@ Outputs:
     Value: !Sub 
       - http://${PublicAddress}:8080
       - PublicAddress: !GetAtt DockerManager1.PublicDnsName
+  1stDockerManagerAppServer:
+    Description: AppServer
+    Value: !Sub 
+      - http://${PublicAddress}:8501
+      - PublicAddress: !GetAtt DockerManager1.PublicDnsName    
   1stDockerManagerDNSName:
     Description: Docker Manager 1st DNS Name
     Value: !Sub 
@@ -292,5 +297,10 @@ Outputs:
     Value: !Sub 
       - ${PublicAddress}
       - PublicAddress: !GetAtt DockerWorker2.PublicDnsName
+  2ndDockerWorkerAppServer:
+    Description: AppServer
+    Value: !Sub 
+      - http://${PublicAddress}:8501
+      - PublicAddress: !GetAtt DockerMWorker2.PublicDnsName
   
   
