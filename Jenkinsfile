@@ -62,6 +62,7 @@ pipeline {
                             echo "Docker Grand Master Public Ip Address Found: $ip"
                             env.MASTER_INSTANCE_PUBLIC_IP = "$ip"
                             break
+                        sleep(300)
                         }
                     }
                 }
@@ -82,6 +83,7 @@ pipeline {
                       sleep(5)   
                     }
                 }
+                sleep(300)
             }
         }
     }
@@ -93,7 +95,7 @@ pipeline {
             steps {
                 echo "Cloning and Deploying App on Swarm using Grand Master with Instance Id: $MASTER_INSTANCE_ID"
                 sh 'mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no --region ${AWS_REGION} ${MASTER_INSTANCE_ID} git clone ${GIT_URL}'
-                sleep(30)
+                sleep(200)
                 sh 'mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no --region ${AWS_REGION} ${MASTER_INSTANCE_ID} docker stack deploy --with-registry-auth -c ${HOME_FOLDER}/${GIT_FOLDER}/docker-compose.yml ${APP_NAME}'
             }
         }
