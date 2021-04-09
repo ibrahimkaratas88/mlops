@@ -62,9 +62,10 @@ pipeline {
                             echo "Docker Grand Master Public Ip Address Found: $ip"
                             env.MASTER_INSTANCE_PUBLIC_IP = "$ip"
                             break
-                        sleep(300)
+                        
                         }
                     }
+                sleep(300)
                 }
             }
         }
