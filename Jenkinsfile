@@ -18,33 +18,33 @@ pipeline {
     }
 
     stages {
-        stage('creating ECR Repository') {
-            steps {
-                echo 'creating ECR Repository'
-                sh """
-                aws ecr create-repository \
-                  --repository-name ${APP_REPO_NAME} \
-                  --image-scanning-configuration scanOnPush=false \
-                  --image-tag-mutability MUTABLE \
-                  --region ${AWS_REGION}
-                """
-            }
-        }
-        stage('building Docker Image') {
-            steps {
-                echo 'building Docker Image'
-                sh 'docker build --force-rm -t "$ECR_REGISTRY/$APP_REPO_NAME:latest" .'
-                sh 'docker image ls'
-            }
-        }
-        stage('pushing Docker image to ECR Repository'){
-            steps {
-                echo 'pushing Docker image to ECR Repository'
-                sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin "$ECR_REGISTRY"'
-                sh 'docker push "$ECR_REGISTRY/$APP_REPO_NAME:latest"'
-
-            }
-        }
+    #    stage('creating ECR Repository') {
+    #        steps {
+    #            echo 'creating ECR Repository'
+    #            sh """
+    #            aws ecr create-repository \
+    #              --repository-name ${APP_REPO_NAME} \
+    #              --image-scanning-configuration scanOnPush=false \
+    #              --image-tag-mutability MUTABLE \
+    #              --region ${AWS_REGION}
+    #            """
+    #        }
+    #    }
+    #    stage('building Docker Image') {
+    #        steps {
+    #            echo 'building Docker Image'
+    #            sh 'docker build --force-rm -t "$ECR_REGISTRY/$APP_REPO_NAME:latest" .'
+    #            sh 'docker image ls'
+    #        }
+    #    }
+    #    stage('pushing Docker image to ECR Repository'){
+    #        steps {
+    #            echo 'pushing Docker image to ECR Repository'
+    #            sh 'aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin "$ECR_REGISTRY"'
+    #            sh 'docker push "$ECR_REGISTRY/$APP_REPO_NAME:latest"'
+#
+    #        }
+    #    }
         stage('creating infrastructure for the Application') {
             steps {
                 echo 'creating infrastructure for the Application'
@@ -56,7 +56,7 @@ pipeline {
                         echo "Docker Grand Master is not UP and running yet. Will try to reach again after 10 seconds..."
                         sleep(10)
 
-                        ip = sh(script:'aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag-value,Values=docker-grand-master Name=tag-value,Values=${AWS_STACK_NAME} --query Reservations[*].Instances[*].[PublicIpAddress] --output text | sed "s/\\s*None\\s*//g"', returnStdout:true).trim()
+                        ip = sh(script:'aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag-value,Values=docker-worker-2 Name=tag-value,Values=${AWS_STACK_NAME} --query Reservations[*].Instances[*].[PublicIpAddress] --output text | sed "s/\\s*None\\s*//g"', returnStdout:true).trim()
 
                         if (ip.length() >= 7) {
                             echo "Docker Grand Master Public Ip Address Found: $ip"
@@ -65,7 +65,7 @@ pipeline {
                         
                         }
                     }
-                sleep(300)
+                sleep(100)
                 }
             }
         }
@@ -84,7 +84,7 @@ pipeline {
                       sleep(5)   
                     }
                 }
-                sleep(300)
+                sleep(100)
             }
         }
     }
@@ -96,7 +96,7 @@ pipeline {
             steps {
                 echo "Cloning and Deploying App on Swarm using Grand Master with Instance Id: $MASTER_INSTANCE_ID"
                 sh 'mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no --region ${AWS_REGION} ${MASTER_INSTANCE_ID} git clone ${GIT_URL}'
-                sleep(200)
+                sleep(30)
                 sh 'mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no --region ${AWS_REGION} ${MASTER_INSTANCE_ID} docker stack deploy --with-registry-auth -c ${HOME_FOLDER}/${GIT_FOLDER}/docker-compose.yml ${APP_NAME}'
             }
         }
