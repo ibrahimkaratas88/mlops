@@ -216,25 +216,10 @@ Resources:
           Value: !Sub Docker Manager 2nd of ${AWS::StackName}
         - Key: project
           Value: "mlops"
-  DockerManager3:
-    Type: AWS::EC2::Instance
-    DependsOn:
-      - DockerManager2
-    Properties:
-      LaunchTemplate:
-        LaunchTemplateId: !Ref ManagerLT
-        Version: !GetAtt ManagerLT.LatestVersionNumber
-      Tags:                
-        - Key: server
-          Value: docker-manager-3                        
-        - Key: Name
-          Value: !Sub Docker Manager 3rd of ${AWS::StackName}
-        - Key: project
-          Value: "mlops"
   DockerWorker1:
     Type: AWS::EC2::Instance
-    DependsOn:
-      - DockerManager2
+  #  DependsOn:
+  #    - DockerManager2
     Properties:
       LaunchTemplate:
         LaunchTemplateId: !Ref WorkerLT
@@ -248,8 +233,8 @@ Resources:
           Value: "mlops"
   DockerWorker2:
     Type: AWS::EC2::Instance
-    DependsOn:
-      - DockerWorker1
+  #  DependsOn:
+  #    - DockerWorker1
     Properties:
       LaunchTemplate:
         LaunchTemplateId: !Ref WorkerLT
@@ -282,11 +267,6 @@ Outputs:
     Value: !Sub 
       - ${PublicAddress}
       - PublicAddress: !GetAtt DockerManager2.PublicDnsName
-  3rdDockerManagerDNSName:
-    Description: Docker Manager 3rd DNS Name
-    Value: !Sub 
-      - ${PublicAddress}
-      - PublicAddress: !GetAtt DockerManager3.PublicDnsName
   1stDockerWorkerDNSName:
     Description: Docker Worker 1st DNS Name
     Value: !Sub 
