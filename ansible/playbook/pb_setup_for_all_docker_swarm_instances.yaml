@@ -13,7 +13,7 @@
       enabled: yes
   - name: add ec2-user to docker group
     shell: "usermod -a -G docker ec2-user"
-  - name: install docker compose.
+  - name: install docker compose
     get_url:
       url: https://github.com/docker/compose/releases/download/1.26.2/docker-compose-Linux-x86_64
       dest: /usr/local/bin/docker-compose
