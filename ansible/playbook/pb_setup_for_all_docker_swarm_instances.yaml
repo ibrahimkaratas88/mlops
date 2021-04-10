@@ -8,7 +8,7 @@
     command: amazon-linux-extras install docker=latest -y
   - name: start docker
     service:
-      name: docker
+      name: docker 
       state: started
       enabled: yes
   - name: add ec2-user to docker group
