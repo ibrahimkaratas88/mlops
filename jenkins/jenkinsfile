@@ -36,7 +36,7 @@ pipeline {
         stage('Push Images to ECR Repo') {
             steps {
                 echo "Pushing ${APP_NAME} App Images to ECR Repo"
-                sh "docker push "$ECR_REGISTRY/$APP_REPO_NAME:latest"
+                sh "docker push ${ECR_REGISTRY}/${APP_REPO_NAME}:latest"
             }
         }
         stage('Create Key Pair for Ansible') {
