@@ -1,0 +1,1 @@
+docker build --force-rm -t "$ECR_REGISTRY/$APP_REPO_NAME:latest"
