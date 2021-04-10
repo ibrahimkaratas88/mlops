@@ -29,7 +29,7 @@ pipeline {
         stage('Build App Docker Images') {
             steps {
                 echo 'Building App Dev Images'
-                sh ". ./jenkins/build-dev-docker-images-for-ecr.sh"
+                sh "docker build --force-rm -t ${ECR_REGISTRY}/${APP_REPO_NAME}:latest"
                 sh 'docker image ls'
             }
         }
