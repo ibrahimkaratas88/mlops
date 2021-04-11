@@ -102,8 +102,6 @@ pipeline {
                 sleep(100)
             }
         }
-    }
-
         stage('Deploy App on Docker Swarm'){
             steps {
                 echo 'Deploying App on Swarm'
@@ -111,7 +109,7 @@ pipeline {
                 sh 'ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b --extra-vars "workspace=${WORKSPACE} app_name=${APP_NAME} aws_region=${AWS_REGION} ecr_registry=${ECR_REGISTRY}" ./ansible/playbooks/pb_deploy_app_on_docker_swarm.yaml'
             }
         }
-                stage('Test the Application Deployment'){
+        stage('Test the Application Deployment'){
             steps {
                 echo "Check if the ${APP_NAME} app is ready or not"
                 script {
