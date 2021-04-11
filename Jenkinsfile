@@ -129,8 +129,8 @@ pipeline {
                 }
             }
         }
-    
-     post {
+    }
+    post {
         always {
             echo 'Deleting all local images'
             sh 'docker image prune -af'
@@ -149,6 +149,5 @@ pipeline {
         success {
             echo 'You are the man/woman...'
         }
-      }
     }
 }
