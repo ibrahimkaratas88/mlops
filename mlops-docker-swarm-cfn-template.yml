@@ -192,6 +192,7 @@ Resources:
           amazon-linux-extras install epel -y
           yum install python-pip -y
           pip install ec2instanceconnectcli
+          pip install --user ansible
           docker swarm init
           yum install git -y
           docker service create \
@@ -206,7 +207,6 @@ Resources:
           unzip awscliv2.zip
           ./aws/install
           yum install amazon-ecr-credential-helper -y
-
           mkdir -p /home/ec2-user/.docker
           cd /home/ec2-user/.docker
           echo '{"credsStore": "ecr-login"}' > config.json

@@ -3,8 +3,19 @@ regions:
   - "us-east-1"
 filters:
   tag:app-stack-name: APP_STACK_NAME
-  tag:environment: dev
-  tag:swarm-role: grand-master
+  tag:environment: mlops
+keyed_groups:
+  - key: tags['app-stack-name']
+    prefix: 'app_stack_'
+    separator: ''
+  - key: tags['swarm-role']
+    prefix: 'role_'
+    separator: ''
+  - key: tags['environment']
+    prefix: 'env_'
+    separator: ''
+  - key: tags['server']
+    separator: ''
 hostnames:
   - "private-ip-address"
 compose:

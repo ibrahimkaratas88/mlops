@@ -18,19 +18,3 @@
       url: https://github.com/docker/compose/releases/download/1.26.2/docker-compose-Linux-x86_64
       dest: /usr/local/bin/docker-compose
       mode: 0755
-  - name: uninstall aws cli v1
-    file:
-      path: /bin/aws
-      state: absent
-  - name: download awscliv2 installer
-    unarchive:
-      src: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
-      dest: /tmp
-      remote_src: yes
-      creates: /tmp/aws
-      mode: 0755
-  - name: run the installer
-    command:
-    args:
-      cmd: "/tmp/aws/install"
-      creates: /usr/local/bin/aws

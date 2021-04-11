@@ -105,8 +105,10 @@ Resources:
           ./aws/install
           # install python 3
           yum install python3 -y
+          amazon-linux-extras install epel -y
+          yum install python-pip -y
           # install ansible
-          pip install ansible
+          pip install --user ansible
           # install boto3
           pip3 install boto3
           

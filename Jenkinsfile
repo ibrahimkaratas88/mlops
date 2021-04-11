@@ -69,6 +69,21 @@ pipeline {
                 }
             }
         }
+         stage('Create Docker Swarm Build') {
+            steps {
+                echo "Setup Docker Swarm Build for ${APP_NAME} App"
+                echo "Update dynamic environment"
+                sh "sed -i 's/APP_STACK_NAME/${APP_STACK_NAME}/' ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml"
+                echo "Swarm Setup for all nodes (instances)"
+                sh "ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b ./ansible/playbooks/pb_setup_for_all_docker_swarm_instances.yaml"
+                echo "Swarm Setup for Grand Master node"
+                sh "ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b ./ansible/playbooks/pb_initialize_docker_swarm.yaml"
+                echo "Swarm Setup for Other Managers nodes"
+                sh "ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b ./ansible/playbooks/pb_join_docker_swarm_managers.yaml"
+                echo "Swarm Setup for Workers nodes"
+                sh "ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b ./ansible/playbooks/pb_join_docker_swarm_workers.yaml"
+            }
+        }
         stage('Test the infrastructure') {
             steps {
                 echo "Testing if the Docker Swarm is ready or not, by checking Viz App on Grand Master with Public Ip Address: ${MASTER_INSTANCE_PUBLIC_IP}:8080"
@@ -89,19 +104,32 @@ pipeline {
         }
     }
 
-        stage('Deploying the Application'){
-            environment {
-                MASTER_INSTANCE_ID=sh(script:'aws ec2 describe-instances --region ${AWS_REGION} --filters Name=tag-value,Values=docker-grand-master Name=tag-value,Values=${AWS_STACK_NAME} --query Reservations[*].Instances[*].[InstanceId] --output text', returnStdout:true).trim()
-            }
+        stage('Deploy App on Docker Swarm'){
             steps {
-                echo "Cloning and Deploying App on Swarm using Grand Master with Instance Id: $MASTER_INSTANCE_ID"
-                sh 'mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no --region ${AWS_REGION} ${MASTER_INSTANCE_ID} git clone ${GIT_URL}'
-               
-                sleep(30)
-                sh 'mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no --region ${AWS_REGION} ${MASTER_INSTANCE_ID} docker stack deploy --with-registry-auth -c ${HOME_FOLDER}/${GIT_FOLDER}/docker-compose.yml ${APP_NAME}'
+                echo 'Deploying App on Swarm'
+                sh 'envsubst < docker-compose.yml > docker-compose.yml'
+                sh 'ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b --extra-vars "workspace=${WORKSPACE} app_name=${APP_NAME} aws_region=${AWS_REGION} ecr_registry=${ECR_REGISTRY}" ./ansible/playbooks/pb_deploy_app_on_docker_swarm.yaml'
             }
         }
-    }
+                stage('Test the Application Deployment'){
+            steps {
+                echo "Check if the ${APP_NAME} app is ready or not"
+                script {
+
+                    while(true) {
+                        try{
+                            sh "curl -s ${GRAND_MASTER_PUBLIC_IP}:8501"
+                            echo "${APP_NAME} app is successfully deployed."
+                            break
+                        }
+                        catch(Exception){
+                            echo "Could not connect to ${APP_NAME} app"
+                            sleep(5)
+                        }
+                    }
+                }
+            }
+        }
     post {
         always {
             echo 'Deleting all local images'
