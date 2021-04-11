@@ -107,6 +107,7 @@ Resources:
           yum install python3 -y
           amazon-linux-extras install epel -y
           yum install python-pip -y
+          pip install ec2instanceconnectcli
           # install ansible
           pip install --user ansible
           # install boto3
