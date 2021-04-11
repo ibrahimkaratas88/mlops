@@ -26,6 +26,7 @@ Resources:
               - 'sts:AssumeRole'
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
+        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
   EC2Profile:
     Type: "AWS::IAM::InstanceProfile"
     Properties:

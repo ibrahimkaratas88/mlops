@@ -42,6 +42,7 @@ Resources:
       ManagedPolicyArns:
         - !Ref InstanceConnectPolicy
         - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess
+        - arn:aws:iam::aws:policy/AmazonEC2FullAccess
   EC2ConnectProfile:
     Type: "AWS::IAM::InstanceProfile"
     Properties:
