@@ -143,8 +143,6 @@ pipeline {
                   --region ${AWS_REGION}\
                   --force
                 """
-            echo 'Deleting Cloudformation Stack due to the Failure'
-            sh 'aws cloudformation delete-stack --region ${AWS_REGION} --stack-name ${AWS_STACK_NAME}'
         }
         success {
             echo 'You are the man/woman...'
