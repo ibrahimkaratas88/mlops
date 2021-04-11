@@ -110,7 +110,7 @@ Resources:
               yum install python3 -y
               amazon-linux-extras install epel -y
               yum install python-pip -y
-              pip install --user ansible
+              
               pip install ec2instanceconnectcli
               eval "$(mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  \
                 --region ${AWS::Region} ${DockerManager1} docker swarm join-token manager | grep -i 'docker')"
@@ -149,7 +149,7 @@ Resources:
               yum install python3 -y
               amazon-linux-extras install epel -y
               yum install python-pip -y
-              pip install --user ansible
+              
               pip install ec2instanceconnectcli
               eval "$(mssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no  \
                 --region ${AWS::Region} ${DockerManager1} docker swarm join-token worker | grep -i 'docker')"
@@ -194,7 +194,7 @@ Resources:
           amazon-linux-extras install epel -y
           yum install python-pip -y
           pip install ec2instanceconnectcli
-          pip install --user ansible
+          python -m pip install ansible
           docker swarm init
           yum install git -y
           docker service create \
