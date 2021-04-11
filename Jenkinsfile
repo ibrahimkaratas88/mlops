@@ -102,6 +102,7 @@ pipeline {
                 sleep(100)
             }
         }
+        }
         stage('Deploy App on Docker Swarm'){
             steps {
                 echo 'Deploying App on Swarm'
