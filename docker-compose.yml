@@ -4,6 +4,8 @@ services:
   app-server:
     image: 830500671980.dkr.ecr.us-east-1.amazonaws.com/mlops:latest
     container_name: mlops-app-server
+    deploy:
+      mode: global
     ports:
       - "8501:8501"
     networks:
