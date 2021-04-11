@@ -1,8 +1,0 @@
-- hosts: role_grand_master
-  tasks:
-  - name: initialize docker swarm
-    shell: docker swarm init
-  - name: install git
-    yum:
-      name: git
-      state: present
