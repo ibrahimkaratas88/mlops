@@ -73,7 +73,7 @@ pipeline {
             steps {
                 echo "Setup Docker Swarm Build for ${APP_NAME} App"
                 echo "Update dynamic environment"
-                sh "sed -i 's/APP_STACK_NAME/${APP_STACK_NAME}/' ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml"
+                sh "sed -i 's/APP_STACK_NAME/' ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml"
                 echo "Swarm Setup for all nodes (instances)"
                 sh "ansible-playbook -i ./ansible/inventory/dev_stack_dynamic_inventory_aws_ec2.yaml -b ./ansible/playbooks/pb_setup_for_all_docker_swarm_instances.yaml"
                 echo "Swarm Setup for Grand Master node"
