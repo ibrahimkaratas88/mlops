@@ -227,8 +227,8 @@ Resources:
           Value: "mlops"
   DockerWorker1:
     Type: AWS::EC2::Instance
-   # DependsOn:
-   #   - DockerManager2
+    DependsOn:
+      - DockerManager2
     Properties:
       LaunchTemplate:
         LaunchTemplateId: !Ref WorkerLT
@@ -274,12 +274,12 @@ Outputs:
   2ndDockerManagerDNSName:
     Description: Docker Manager 2nd DNS Name
     Value: !Sub 
-      - ${PublicAddress}:8080
+      - ${PublicAddress}
       - PublicAddress: !GetAtt DockerManager2.PublicDnsName
   1stDockerWorkerDNSName:
     Description: Docker Worker 1st DNS Name
     Value: !Sub 
-      - ${PublicAddress}:8501
+      - ${PublicAddress}
       - PublicAddress: !GetAtt DockerWorker1.PublicDnsName
   2ndDockerWorkerDNSName:
     Description: Docker Worker 2nd DNS Name
