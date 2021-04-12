@@ -274,12 +274,12 @@ Outputs:
   2ndDockerManagerDNSName:
     Description: Docker Manager 2nd DNS Name
     Value: !Sub 
-      - ${PublicAddress}
+      - ${PublicAddress}:8080
       - PublicAddress: !GetAtt DockerManager2.PublicDnsName
   1stDockerWorkerDNSName:
     Description: Docker Worker 1st DNS Name
     Value: !Sub 
-      - ${PublicAddress}
+      - ${PublicAddress}:8501
       - PublicAddress: !GetAtt DockerWorker1.PublicDnsName
   2ndDockerWorkerDNSName:
     Description: Docker Worker 2nd DNS Name
